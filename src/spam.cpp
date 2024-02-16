@@ -170,11 +170,11 @@ int main(int argc, char **argv)
 			TSpam12 spam(iFile, T1, T2);
 			if (oFile1 != "")
 			{
-				saveF(oFile1, spam.getF1(), spam.f1Num(), iFile);
+				saveF(oFile1, spam.get1ndOrderFeatures(), spam.f1Num(), iFile);
 			}
 			if (oFile2 != "")
 			{
-				saveF(oFile2, spam.getF2(), spam.f2Num(), iFile);
+				saveF(oFile2, spam.get2ndOrderFeatures(), spam.f2Num(), iFile);
 			}
 		}
 		catch (TSpamEx &ex)
@@ -218,11 +218,11 @@ int main(int argc, char **argv)
 				TSpam12 spam(imagePath.str(), T1, T2);
 				if (oFile1 != "")
 				{
-					saveF(oFile1, spam.getF1(), spam.f1Num(), fileName);
+					saveF(oFile1, spam.get1ndOrderFeatures(), spam.f1Num(), fileName);
 				}
 				if (oFile2 != "")
 				{
-					saveF(oFile2, spam.getF2(), spam.f2Num(), fileName);
+					saveF(oFile2, spam.get2ndOrderFeatures(), spam.f2Num(), fileName);
 				}
 			}
 			catch (TSpamEx &ex)

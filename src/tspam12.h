@@ -34,13 +34,13 @@ public:
 	}
 
 	/** return the 2nd order SPAM features */
-	boost::shared_array<double> getF2();
+	boost::shared_array<double> get2ndOrderFeatures();
 
 	/** return the 1st order SPAM features */
-	boost::shared_array<double> getF1();
+	boost::shared_array<double> get1ndOrderFeatures();
 
 	/** return the 1st and 2nd order SPAM features */
-	boost::shared_array<double> getF();
+	boost::shared_array<double> get1stOrderFeatures();
 
 	/** @return width of the  image */
 	virtual int getWidth()
@@ -76,7 +76,7 @@ public:
 		return 2 * t2 * t2 * t2 + 1;
 	}
 
-	void write(std::string fileName);
+	void writePngObj(std::string fileName);
 
 	bool checkPixel(int x, int y, int v);
 
@@ -94,7 +94,7 @@ private:
 	@param rows number of rows of submatrix
 	@param cols number of columns of submatrix
 	@return matrix rows-cols containing M1-M2*/
-	boost::shared_array<int> subIm(int stIndex1, int stIndex2, int rows, int cols);
+	boost::shared_array<int> matrixSubstract(int stIndex1, int stIndex2, int rows, int cols);
 
 	/** Width of the original image */
 	// int width;
@@ -137,7 +137,7 @@ private:
 	@param diff matrix within which x1,x2, and x3 are calculated
 	@param dColls number of collumns of matrix diff
 	@param key index to P and F, where the cooccurences will be stored */
-	void cooc2nd(int x1, int x2, int y, int cols, int rows, boost::shared_array<int> diff, int dColls, int key);
+	void matrixGetCooccurences2nd(int x1, int x2, int y, int cols, int rows, boost::shared_array<int> diff, int dColls, int key);
 
 	/** Calculates number of cooccuureces in the matrix diff on the same offsets starting from x1,x2,and y.
 	The cooccurences are calculated in the range [-T,...,+T].
@@ -150,7 +150,7 @@ private:
 	@param diff matrix within which x1,x2, and x3 are calculated
 	@param dColls number of collumns of matrix diff
 	@param key index to P and F, where the cooccurences will be stored */
-	void cooc(int x1, int y, int cols, int rows, boost::shared_array<int> diff, int dColls, int key);
+	void matrixGetCooccurences(int x1, int y, int cols, int rows, boost::shared_array<int> diff, int dColls, int key);
 };
 
 #endif

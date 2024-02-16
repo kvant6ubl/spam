@@ -31,50 +31,51 @@ TSpam12::TSpam12(std::string fileName, int T1, int T2)
 	/*than, we calculate 2nd order spam features of padded image */
 	shared_array<int> diff;
 	/*features in horizontal direction */
-	diff = subIm(3 * pWidth + 3, 3 * pWidth + 4, height, width - 1); // im[:,0:xSize-1]-im[:,1:xSize]
-	cooc(0, 1, width - 2, height, diff, width - 1, 0);
-	cooc2nd(0, 1, 2, width - 3, height, diff, width - 1, 0);
+	diff = matrixSubstract(3 * pWidth + 3, 3 * pWidth + 4, height, width - 1); // im[:,0:xSize-1]-im[:,1:xSize]
+	matrixGetCooccurences(0, 1, width - 2, height, diff, width - 1, 0);
+	matrixGetCooccurences2nd(0, 1, 2, width - 3, height, diff, width - 1, 0);
 
-	diff = subIm(3 * pWidth + 4, 3 * pWidth + 3, height, width - 1); // im[:,1:xSize]-im[:,0:xSize-1]
-	cooc(1, 0, width - 2, height, diff, width - 1, 1);
-	cooc2nd(2, 1, 0, width - 3, height, diff, width - 1, 1);
+	diff = matrixSubstract(3 * pWidth + 4, 3 * pWidth + 3, height, width - 1); // im[:,1:xSize]-im[:,0:xSize-1]
+	matrixGetCooccurences(1, 0, width - 2, height, diff, width - 1, 1);
+	matrixGetCooccurences2nd(2, 1, 0, width - 3, height, diff, width - 1, 1);
 
 	/*features in vertical direction */
-	diff = subIm(3 * pWidth + 3, 4 * pWidth + 3, height - 1, width); // im[0:ySize-1,:]-im[1:ySize,:]
-	cooc(0, width, width, height - 2, diff, width, 2);
-	cooc2nd(0, width, 2 * width, width, height - 3, diff, width, 2);
+	diff = matrixSubstract(3 * pWidth + 3, 4 * pWidth + 3, height - 1, width); // im[0:ySize-1,:]-im[1:ySize,:]
+	matrixGetCooccurences(0, width, width, height - 2, diff, width, 2);
+	matrixGetCooccurences2nd(0, width, 2 * width, width, height - 3, diff, width, 2);
 
-	diff = subIm(4 * pWidth + 3, 3 * pWidth + 3, height - 1, width); // im[1:ySize,:]-im[0:ySize-1,:]
-	cooc(width, 0, width, height - 2, diff, width, 3);
-	cooc2nd(2 * width, width, 0, width, height - 3, diff, width, 3);
+	diff = matrixSubstract(4 * pWidth + 3, 3 * pWidth + 3, height - 1, width); // im[1:ySize,:]-im[0:ySize-1,:]
+	matrixGetCooccurences(width, 0, width, height - 2, diff, width, 3);
+	matrixGetCooccurences2nd(2 * width, width, 0, width, height - 3, diff, width, 3);
 
 	/*features along main diagonal */
-	diff = subIm(3 * pWidth + 3, 4 * pWidth + 4, height - 1, width - 1); // im[0:ySize-1,0:xSize-1]-im[1:ySize,1:xSize]
-	cooc(0, (width - 1) + 1, width - 2, height - 2, diff, width - 1, 4);
-	cooc2nd(0, (width - 1) + 1, 2 * (width - 1) + 2, width - 3, height - 3, diff, width - 1, 4);
+	diff = matrixSubstract(3 * pWidth + 3, 4 * pWidth + 4, height - 1, width - 1); // im[0:ySize-1,0:xSize-1]-im[1:ySize,1:xSize]
+	matrixGetCooccurences(0, (width - 1) + 1, width - 2, height - 2, diff, width - 1, 4);
+	matrixGetCooccurences2nd(0, (width - 1) + 1, 2 * (width - 1) + 2, width - 3, height - 3, diff, width - 1, 4);
 
-	diff = subIm(4 * pWidth + 4, 3 * pWidth + 3, height - 1, width - 1); // im[1:ySize,1:xSize]-im[0:ySize-1,0:xSize-1]
-	cooc((width - 1) + 1, 0, width - 2, height - 2, diff, width - 1, 5);
-	cooc2nd(2 * (width - 1) + 2, (width - 1) + 1, 0, width - 3, height - 3, diff, width - 1, 5);
+	diff = matrixSubstract(4 * pWidth + 4, 3 * pWidth + 3, height - 1, width - 1); // im[1:ySize,1:xSize]-im[0:ySize-1,0:xSize-1]
+	matrixGetCooccurences((width - 1) + 1, 0, width - 2, height - 2, diff, width - 1, 5);
+	matrixGetCooccurences2nd(2 * (width - 1) + 2, (width - 1) + 1, 0, width - 3, height - 3, diff, width - 1, 5);
 
 	/* features along minor diagonal */
-	diff = subIm(3 * pWidth + 4, 4 * pWidth + 3, height - 1, width - 1); // im[0:ySize-1,1:xSize]-im[1:ySize,0:xSize-1]
-	cooc(1, width - 1, width - 2, height - 2, diff, width - 1, 6);
-	cooc2nd(2, (width - 1) + 1, 2 * (width - 1), width - 3, height - 3, diff, width - 1, 6);
+	diff = matrixSubstract(3 * pWidth + 4, 4 * pWidth + 3, height - 1, width - 1); // im[0:ySize-1,1:xSize]-im[1:ySize,0:xSize-1]
+	matrixGetCooccurences(1, width - 1, width - 2, height - 2, diff, width - 1, 6);
+	matrixGetCooccurences2nd(2, (width - 1) + 1, 2 * (width - 1), width - 3, height - 3, diff, width - 1, 6);
 
-	diff = subIm(4 * pWidth + 3, 3 * pWidth + 4, height - 1, width - 1); // im[1:ySize,0:xSize-1]-im[0:ySize-1,1:xSize]
-	cooc(width - 1, 1, width - 2, height - 2, diff, width - 1, 7);
-	cooc2nd(2 * (width - 1), (width - 1) + 1, 2, width - 3, height - 3, diff, width - 1, 7);
+	diff = matrixSubstract(4 * pWidth + 3, 3 * pWidth + 4, height - 1, width - 1); // im[1:ySize,0:xSize-1]-im[0:ySize-1,1:xSize]
+	matrixGetCooccurences(width - 1, 1, width - 2, height - 2, diff, width - 1, 7);
+	matrixGetCooccurences2nd(2 * (width - 1), (width - 1) + 1, 2, width - 3, height - 3, diff, width - 1, 7);
 }
 
-/** Substracts two submatrices of im (padded) (M1 - M2). Submatrices have to
-have same dimension rows x cols.
-@param stIndex1 starting index of submatrix M1
-@param stIndex2 starting index of submatrix M2
-@param rows number of rows of submatrix
-@param cols number of columns of submatrix
-@return matrix rows-cols containing M1-M2*/
-shared_array<int> TSpam12::subIm(int stIndex1, int stIndex2, int rows, int cols)
+/**
+ * @brief Substracts two submatrices of im (padded) (M1 - M2). Submatrices have to have same dimension rows x cols.
+ *    @param stIndex1 starting index of submatrix M1
+ *    @param stIndex2 starting index of submatrix M2
+ *    @param rows number of rows of submatrix
+ *    @param cols number of columns of submatrix
+ *    @return matrix rows-cols containing M1-M2
+ */
+shared_array<int> TSpam12::matrixSubstract(int stIndex1, int stIndex2, int rows, int cols)
 {
 	/*first, let's allocate space for the output */
 	shared_array<int> subIm(new int[rows * cols]);
@@ -89,19 +90,18 @@ shared_array<int> TSpam12::subIm(int stIndex1, int stIndex2, int rows, int cols)
 	return subIm;
 }
 
-/** Calculates number of cooccuureces in the matrix diff on the same offsets starting from x1,x2,and y.
-The cooccurences are calculated in the range [-T,...,+T].
-Moreover, the number of cooccurences of x1 and x2 are calculated so we will be able to calculate conditional
-probabilities. Results are stored in F and P keyed by key.
-@param x1 starting offset of the first sub-matrix
-@param x2 starting offset of the second sub-matrix
-@param y starting offset of the third sub-matrix
-@param cols number of columns of submatrices x1,x2 and y
-@param rows number of columns of submatrices x1,x2 and y
-@param diff matrix within which x1,x2, and x3 are calculated
-@param dColls number of collumns of matrix diff
-@param key index to P and F, where the cooccurences will be stored */
-void TSpam12::cooc2nd(int x1, int x2, int y, int cols, int rows, shared_array<int> diff, int dColls, int key)
+/**
+ * @brief Calculates number of cooccuureces in the matrix diff on the same offsets starting from x1,x2,and y. The cooccurences are calculated in the range [-T,...,+T].
+ *    @param x1 starting offset of the first sub-matrix
+ *    @param x2 starting offset of the second sub-matrix
+ *    @param y starting offset of the third sub-matrix
+ *    @param cols number of columns of submatrices x1,x2 and y
+ *    @param rows number of columns of submatrices x1,x2 and y
+ *    @param diff matrix within which x1,x2, and x3 are calculated
+ *    @param dColls number of collumns of matrix diff
+ *    @param key index to P and F, where the cooccurences will be stored
+ */
+void TSpam12::matrixGetCooccurences2nd(int x1, int x2, int y, int cols, int rows, shared_array<int> diff, int dColls, int key)
 {
 	int t = 2 * T2 + 1;
 	shared_array<double> f(new double[t * t * t]);
@@ -139,22 +139,25 @@ void TSpam12::cooc2nd(int x1, int x2, int y, int cols, int rows, shared_array<in
 	P2[key] = p;
 }
 
-/** Calculates number of cooccuureces in the matrix diff on the same offsets starting from x1,x2,and y.
-The cooccurences are calculated in the range [-T,...,+T].
-Moreover, the number of cooccurences of x1 and x2 are calculated so we will be able to calculate conditional
-probabilities. Results are stored in F and P keyed by key.
-@param x1 starting offset of the first sub-matrix
-@param y starting offset of the second sub-matrix
-@param cols number of columns of submatrices x1,x2 and y
-@param rows number of columns of submatrices x1,x2 and y
-@param diff matrix within which x1,x2, and x3 are calculated
-@param dColls number of collumns of matrix diff
-@param key index to P and F, where the cooccurences will be stored */
-void TSpam12::cooc(int x1, int y, int cols, int rows, shared_array<int> diff, int dColls, int key)
+/**
+ * @brief Calculates number of cooccuureces in the matrix diff on the same offsets starting from x1,x2,and y.
+ *
+ * @details The cooccurences are calculated in the range [-T,...,+T]. Moreover, the number of cooccurences of x1 and x2 are calculated so we will be able to calculate conditional
+ * probabilities. Results are stored in F and P keyed by key.
+ *    @param x1 starting offset of the first sub-matrix
+ *    @param y starting offset of the second sub-matrix
+ *    @param cols number of columns of submatrices x1,x2 and y
+ *    @param rows number of columns of submatrices x1,x2 and y
+ *    @param diff matrix within which x1,x2, and x3 are calculated
+ *    @param dColls number of collumns of matrix diff
+ *    @param key index to P and F, where the cooccurences will be stored
+ */
+void TSpam12::matrixGetCooccurences(int x1, int y, int cols, int rows, shared_array<int> diff, int dColls, int key)
 {
 	int t = 2 * T1 + 1;
 	shared_array<double> f(new double[t * t]);
 	shared_array<double> p(new double[t]);
+
 	for (int i = 0; i < t * t; i++)
 	{
 		f[i] = 0.0;
@@ -187,33 +190,51 @@ void TSpam12::cooc(int x1, int y, int cols, int rows, shared_array<int> diff, in
 	P1[key] = p;
 }
 
-/** Loads image to the array im. It fils the width, height, pWidth, pHeight approariately.
-@param fileName path to the image to load */
+/**
+ * @brief Loads image to the array im. It fils the width, height, pWidth, pHeight approariately.
+ *    @param fileName path to the image to load
+ */
 void TSpam12::loadImage(std::string fileName)
 {
 	png_byte header[8]; // 8 is the maximum size that can be checked
 
 	/* open file and test for it being a png */
 	FILE *fp = fopen(fileName.c_str(), "rb");
+
 	if (!fp)
-		throw TSpamEx("[read_png_file] File " + fileName + " could not be opened for reading");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | File " + fileName + " could not be opened for reading");
+	}
+
 	if (fread(header, 1, 8, fp) == 0)
-		throw TSpamEx("[read_png_file] File " + fileName + " is empty");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | File " + fileName + " is empty");
+	}
+
 	if (png_sig_cmp(header, 0, 8))
-		throw TSpamEx("[read_png_file] File " + fileName + " is not recognized as a PNG file");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | File " + fileName + " is not recognized as a PNG file");
+	}
 
 	/* initialize stuff */
 	png_structp png_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 	if (!png_ptr)
-		throw TSpamEx("[read_png_file] png_create_read_struct failed");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | creating read-struct failed!");
+	}
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
+
 	if (!info_ptr)
-		throw TSpamEx("[read_png_file] png_create_info_struct failed");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | creating info-struct failed!");
+	}
 
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[read_png_file] Error during init_io");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | Error during initialization io");
+	}
 
 	png_init_io(png_ptr, fp);
 	png_set_sig_bytes(png_ptr, 8);
@@ -221,32 +242,36 @@ void TSpam12::loadImage(std::string fileName)
 	png_read_info(png_ptr, info_ptr);
 	png_read_update_info(png_ptr, info_ptr);
 
-	// this->width = info_ptr->width;
-	// this->height = info_ptr->height;
-	this->width  = png_get_image_width(png_ptr, info_ptr);
+	this->width = png_get_image_width(png_ptr, info_ptr);
 	this->height = png_get_image_height(png_ptr, info_ptr);
 
 	if (png_get_channels(png_ptr, info_ptr) != 1)
 	{
-		throw TSpamEx("sorry, but program supports only images with one channel.\nWe are academics, not business\nuse convert -type grayscale");
+		throw TSpamEx("TSpam12 :: loadImage | currently supports only images with one channel!"); // Use convert -type grayscale
 	}
+
 	if (png_get_color_type(png_ptr, info_ptr) != PNG_COLOR_TYPE_GRAY)
 	{
-		throw TSpamEx("sorry, but program supports only greyscale images.\nWe are academics, not business\nuse convert -type grayscale");
+		throw TSpamEx("TSpam12 :: loadImage | currently supports only greyscale images!"); // Use convert -type grayscale
 	}
+
 	if (png_get_bit_depth(png_ptr, info_ptr) != 8)
 	{
-		throw TSpamEx("sorry, but program supports only images with 8 bits color depth.\nWe are academics, not business\nuse convert -type grayscale");
+		throw TSpamEx("TSpam12 :: loadImage | currently supports only images with 8 bits color depth!"); // Use convert -type grayscale
 	}
 
 	/* read file */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[read_png_file] Error during read_image");
+	{
+		throw TSpamEx("TSpam12 :: loadImage | Error during read an image");
+	}
 
 	/* Allocate the memory to read the rows of the image */
 	png_bytep *row_pointers = (png_bytep *)malloc(sizeof(png_bytep) * height);
-	for (int y = 0; y < height; y++)
+	for (int y = 0; y < (int)height; y++)
+	{
 		row_pointers[y] = (png_byte *)malloc(sizeof(png_bytep) * (png_get_rowbytes(png_ptr, info_ptr)));
+	}
 
 	/* Read the image. */
 	png_read_image(png_ptr, row_pointers);
@@ -259,10 +284,11 @@ void TSpam12::loadImage(std::string fileName)
 	pWidth = width + 6;
 	pHeight = height + 6;
 	this->im = shared_array<int>(new int[pWidth * pHeight]);
-	for (int i = 0; i < height; i++)
+
+	for (int i = 0; i < (int)height; i++)
 	{
 		png_bytep row = row_pointers[i];
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < (int)width; j++)
 		{
 			im[(i + 3) * pWidth + j + 3] = row[j];
 		}
@@ -284,11 +310,13 @@ void TSpam12::loadImage(std::string fileName)
 		im[i * pWidth + 0] = -1536;
 		im[i * pWidth + width + 5] = -1536;
 	}
+
 	for (int i = 1; i < pHeight - 1; i++)
 	{
 		im[i * pWidth + 1] = -1024;
 		im[i * pWidth + width + 4] = -1024;
 	}
+
 	for (int i = 2; i < pHeight - 2; i++)
 	{
 		im[i * pWidth + 2] = -512;
@@ -296,17 +324,20 @@ void TSpam12::loadImage(std::string fileName)
 	}
 
 	/*finally, de-allocate the image from the memory*/
-	for (int y = 0; y < height; y++)
+	for (int y = 0; y < (int)height; y++)
+	{
 		free(row_pointers[y]);
+	}
 	free(row_pointers);
 	// 	cout <<"loaded image "<<fileName<<" "<<width<<"x"<<height<<endl;
 }
 
-/** Change the pixel of the image at location x,y to value v.
-Matrices for the calculation of the features are appropriately recalculated.
-@param x x coordinate
-@param y y coordinate
-@param v new value of the pixel */
+/**
+ * @brief Change the pixel of the image at location x,y to value v. Matrices for the calculation of the features are appropriately recalculated.
+ *    @param x x coordinate
+ *    @param y y coordinate
+ *    @param v new value of the pixel
+ */
 void TSpam12::setPixel(int x, int y, int v)
 {
 	/*move to the padded  coordinates */
@@ -414,11 +445,13 @@ void TSpam12::setPixel(int x, int y, int v)
 	}
 }
 
-/** Verify, if the pixel falls in the model
-@param x x coordinate
-@param y y coordinate
-@param v new value of the pixel
-@return true if pixel is within model*/
+/**
+ * @brief Verify, if the pixel falls in the model.
+ *    @param x x coordinate
+ *    @param y y coordinate
+ *    @param v new value of the pixel
+ *    @return true if pixel is within model
+ */
 bool TSpam12::checkPixel(int x, int y, int v)
 {
 	/*move to the padded  coordinates */
@@ -435,11 +468,13 @@ bool TSpam12::checkPixel(int x, int y, int v)
 		int dy = d[2 * i + 0];
 		int dx = d[2 * i + 1];
 		int d = im[y * pWidth + x] - im[(y + dy) * pWidth + x + dx];
+
 		if ((abs(d) > T2) && (abs(d) < 256))
 		{
 			im[y * pWidth + x] = oldValue;
 			return false;
 		}
+
 		/*check second difference */
 		d = im[(y + dy) * pWidth + x + dx] - im[(y + 2 * dy) * pWidth + x + 2 * dx];
 		if ((abs(d) > T2) && (abs(d) < 256))
@@ -447,6 +482,7 @@ bool TSpam12::checkPixel(int x, int y, int v)
 			im[y * pWidth + x] = oldValue;
 			return false;
 		}
+
 		/*check third difference */
 		d = im[(y + 2 * dy) * pWidth + x + 2 * dx] - im[(y + 3 * dy) * pWidth + x + 3 * dx];
 		if ((abs(d) > T2) && (abs(d) < 256))
@@ -459,18 +495,24 @@ bool TSpam12::checkPixel(int x, int y, int v)
 	return true;
 }
 
-/** return the 2nd order SPAM features */
-shared_array<double> TSpam12::getF2()
+/**
+ * @brief Get 2nd order SPAM features
+ *    @return the 2nd order SPAM features
+ */
+shared_array<double> TSpam12::get2ndOrderFeatures()
 {
 	/* to finalize the calculation of the features, we need to normalize matrix */
 	int t2 = 2 * T2 + 1;
 	int oneMat2 = t2 * t2 * t2;
 	shared_array<double> fVec(new double[2 * oneMat2 + 1]);
+
 	for (int i = 0; i < 2 * oneMat2 + 1; i++)
 	{
 		fVec[i] = 0.0;
 	}
+
 	int key = 0;
+
 	for (int i = 0; i < 8; i++)
 	{
 		boost::shared_array<double> f2 = F2[i];
@@ -494,18 +536,24 @@ shared_array<double> TSpam12::getF2()
 	return fVec;
 }
 
-/** return the 1st order SPAM features */
-shared_array<double> TSpam12::getF1()
+/**
+ * @brief Get 1nd order SPAM features
+ *    @return the 1nd order SPAM features
+ */
+shared_array<double> TSpam12::get1ndOrderFeatures()
 {
 	/* to finalize the calculation of the features, we need to normalize matrix */
 	int t1 = 2 * T1 + 1;
 	int oneMat1 = t1 * t1;
 	shared_array<double> fVec(new double[2 * oneMat1 + 1]);
+
 	for (int i = 0; i < 2 * oneMat1 + 1; i++)
 	{
 		fVec[i] = 0.0;
 	}
+
 	int key = 0;
+
 	for (int i = 0; i < 8; i++)
 	{
 		boost::shared_array<double> f1 = F1[i];
@@ -527,17 +575,22 @@ shared_array<double> TSpam12::getF1()
 	return fVec;
 }
 
-/** return the 1st order SPAM features */
-shared_array<double> TSpam12::getF()
+/**
+ * @brief Get 1st order SPAM features
+ *    @return the 1st order SPAM features
+ */
+shared_array<double> TSpam12::get1stOrderFeatures()
 {
 	/* to finalize the calculation of the features, we need to normalize matrix */
 	int t1 = 2 * T1 + 1;
 	int oneMat1 = t1 * t1;
 	int t2 = 2 * T2 + 1;
 	int oneMat2 = t2 * t2 * t2;
+
 	shared_array<double> fVec(new double[2 * oneMat1 + 2 * oneMat2 + 1]);
-	shared_array<double> fVec1 = getF1();
-	shared_array<double> fVec2 = getF2();
+	shared_array<double> fVec1 = get1ndOrderFeatures();
+	shared_array<double> fVec2 = get2ndOrderFeatures();
+
 	for (int i = 0; i < 2 * oneMat1; i++)
 	{
 		fVec[i] = fVec1[i];
@@ -555,55 +608,69 @@ TSpam12::~TSpam12()
 {
 }
 
-void TSpam12::write(string fileName)
+/**
+ * @brief Write PNG objects
+ */
+void TSpam12::writePngObj(string fileName)
 {
 	/* create file */
 	FILE *fp = fopen(fileName.c_str(), "wb");
+
 	if (!fp)
-		throw TSpamEx("File " + fileName + " could not be opened for writing");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | File " + fileName + " could not be opened for writing");
+	}
 
 	/* initialize stuff */
 	png_structp png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 
 	if (!png_ptr)
-		throw TSpamEx("[write_png_file] png_create_write_struct failed");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | PNG create write struct failed");
+	}
 
 	png_infop info_ptr = png_create_info_struct(png_ptr);
+
 	if (!info_ptr)
-		throw TSpamEx("[write_png_file] png_create_info_struct failed");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | PNG create info struct failed");
+	}
 
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[write_png_file] Error during init_io");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | Error during init_io");
+	}
 
 	png_init_io(png_ptr, fp);
 
 	/* write header */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[write_png_file] Error during writing header");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | Error during writing header");
+	}
 
+	/*
+	from http://www.libpng.org/pub/png/libpng-manual.txt
+	info_ptr->channels = 1;
+	You can also set up a pointer to a user structure for use by your
+	callback function, and you can inform libpng that your transform
+	function will change the number of channels or bit depth with the
+	function.
 
-	// from http://www.libpng.org/pub/png/libpng-manual.txt
-	// info_ptr->channels = 1;
-	// You can also set up a pointer to a user structure for use by your
-	// callback function, and you can inform libpng that your transform
-	// function will change the number of channels or bit depth with the
-	// function.
+	bit_depth      - holds the bit depth of one of the
+	                 image channels.  (valid values are
+	                 1, 2, 4, 8, 16 and depend also on
+	                 the color_type.  See also
+	                 significant bits (sBIT) below).
 
-	// bit_depth      - holds the bit depth of one of the
-    //                  image channels.  (valid values are
-    //                  1, 2, 4, 8, 16 and depend also on
-    //                  the color_type.  See also
-    //                  significant bits (sBIT) below).
+	color_type     - describes which color/alpha channels
+	                     are present.
+	                 PNG_COLOR_TYPE_GRAY
+	                    (bit depths 1, 2, 4, 8, 16)
+	*/
 
-    // color_type     - describes which color/alpha channels
-    //                      are present.
-    //                  PNG_COLOR_TYPE_GRAY
-    //                     (bit depths 1, 2, 4, 8, 16)
 	png_set_user_transform_info(png_ptr, info_ptr, 1, 1);
 
-
-
-	// png_get_color_type(png_ptr, info_ptr)
 	png_set_IHDR(png_ptr, info_ptr, width, height,
 				 8, PNG_COLOR_TYPE_GRAY, PNG_INTERLACE_NONE,
 				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
@@ -613,13 +680,15 @@ void TSpam12::write(string fileName)
 	/*copy relevant part of the image */
 	/* Allocate the memory to read the rows of the image */
 	png_bytep *row_pointers = (png_bytep *)malloc(sizeof(png_bytep) * height);
-	for (int y = 0; y < height; y++)
+	for (int y = 0; y < (int)height; y++)
+	{
 		row_pointers[y] = (png_byte *)malloc(sizeof(png_bytep) * width);
+	}
 
-	for (int i = 0; i < height; i++)
+	for (int i = 0; i < (int)height; i++)
 	{
 		png_bytep row = row_pointers[i];
-		for (int j = 0; j < width; j++)
+		for (int j = 0; j < (int)width; j++)
 		{
 			row[j] = im[(i + 3) * pWidth + j + 3];
 		}
@@ -627,21 +696,29 @@ void TSpam12::write(string fileName)
 
 	/* write bytes */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[write_png_file] Error during writing bytes");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | Error during writing bytes");
+	}
 
 	png_write_image(png_ptr, row_pointers);
 
 	/* end write */
 	if (setjmp(png_jmpbuf(png_ptr)))
-		throw TSpamEx("[write_png_file] Error during end of write");
+	{
+		throw TSpamEx("TSpam12 :: writePngObj | Error during end of write");
+	}
 
 	png_write_end(png_ptr, NULL);
 
 	/* cleanup heap allocation */
-	for (int y = 0; y < height; y++)
+	for (int y = 0; y < (int)height; y++)
+	{
 		free(row_pointers[y]);
+	}
 	free(row_pointers);
 
 	png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
 	fclose(fp);
 }
+
+/* EOF */
