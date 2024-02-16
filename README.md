@@ -1,6 +1,10 @@
 ## spam
 
-Updated version of extractor of 1st and 2nd order SPAM features from grayscale .png images. This tool is based on related works by T. Pevny, P. Bas and J. Fridrich.
+The SPAM (Subtractive Pixel Adjacency Matrix) model is based on the analysis of changes in noise components of a digital image (container) when embedding messages using theory of Markov processes.
+
+The matrix of transition probabilities obtained in the process of modeling inter-pixel dependencies as a higher-order Markov chain is used as a feature vector for the stegoanalyzer. For more references please see corresponding PDF in ``docs/`` folder.
+
+This repository contains the updated version of SPAM extractor of 1st and 2nd order SPAM features from grayscale .png images. This tool is based on related works by T. Pevny, P. Bas and J. Fridrich.
 
 ### Fixed issues
 1. Fix deprecated ``leaf()`` (``boost`` C++ lib) to get filename of current directory.
